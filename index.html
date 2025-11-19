@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flean - Creator Hubs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #FAFAF8;
+            color: #1A1A1A;
+            overflow-x: hidden;
+        }
+
+        .phone-container {
+            max-width: 390px;
+            margin: 20px auto;
+            background: white;
+            min-height: 844px;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            height: 844px;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Header Styles */
+        .header {
+            padding: 16px 20px;
+            background: white;
+            border-bottom: 1px solid #F0F0EE;
+        }
+
+        .greeting {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 4px;
+        }
+
+        .location {
+            font-size: 13px;
+            color: #6B6B6B;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Goal Chips */
+        .goal-chips {
+            padding: 16px 20px;
+            overflow-x: auto;
+            display: flex;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .goal-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background: #F5F5F3;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #1A1A1A;
+            border: 1px solid #E8E8E6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: #5A9B8E;
+            color: white;
+            border-color: #5A9B8E;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6B6B6B;
+        }
+
+        .mode-toggle.active {
+            background: white;
+            color: #1A1A1A;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            padding: 0 20px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1A1A1A;
+        }
+
+        /* Meal Drop Card */
+        .meal-drop-card {
+            background: white;
+            margin: 0 20px;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .meal-drop-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .creator-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5A9B8E, #7AB5A8);
+        }
+
+        .creator-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1A1A1A;
+        }
+
+        .drop-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .time-info {
+            font-size: 13px;
+            color: #6B6B6B;
+            margin-bottom: 12px;
+        }
+
+        .dish-preview {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .dish-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #E8F3F0, #D5E8E3);
+        }
+
+        .health-strip {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .health-tag {
+            padding: 4px 10px;
+            background: #F0F8F6;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #5A9B8E;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 12px;
+            background: #5A9B8E;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+
+        /* Creator Card */
+        .creators-scroll {
+            display: flex;
+            gap: 12px;
+            padding: 0 20px;
+            overflow-x: auto;
+        }
+
+        .creators-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .creator-card {
+            min-width: 140px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .creator-card .avatar {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 10px;
+        }
+
+        .creator-role {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-top: 4px;
+        }
+
+        .creator-tags {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .creator-tag {
+            font-size: 10px;
+            color: #5A9B8E;
+            background: #F0F8F6;
+            padding: 3px 8px;
+            border-radius: 8px;
+        }
+
+        /* Kit Cards */
+        .kit-card {
+            background: white;
+            margin: 0 20px 12px;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .kit-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .kit-info {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 8px;
+        }
+
+        /* Quick Kits Horizontal Rail */
+        .kits-horizontal-rail {
+            display: flex;
+            gap: 12px;
+            padding: 0 20px;
+            overflow-x: auto;
+        }
+
+        .kits-horizontal-rail::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-kit-card {
+            min-width: 160px;
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            border: 1px solid #F0F0EE;
+        }
+
+        .kit-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #F0F8F6;
+            color: #5A9B8E;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .quick-kit-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 4px;
+        }
+
+        .quick-kit-desc {
+            font-size: 11px;
+            color: #6B6B6B;
+            margin-bottom: 6px;
+        }
+
+        .quick-kit-price {
+            font-size: 12px;
+            color: #4A4A4A;
+            font-weight: 500;
+        }
+
+        /* Segmented Control */
+        .segmented-control {
+            display: flex;
+            background: #F5F5F3;
+            border-radius: 10px;
+            padding: 4px;
+            margin: 16px 20px;
+            gap: 4px;
+        }
+
+        .segment {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6B6B6B;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .segment.active {
+            background: white;
+            color: #1A1A1A;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        .products-link {
+            font-size: 13px;
+            color: #5A9B8E;
+            text-decoration: none;
+            margin-top: 8px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .products-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Search Bar */
+        .search-bar-container {
+            padding: 0 20px 12px;
+        }
+
+        .search-bar {
+            width: 100%;
+            background: #F5F5F3;
+            border: 1px solid #E8E8E6;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .search-bar:hover {
+            border-color: #D0D0CE;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.5;
+            flex-shrink: 0;
+            color: #6B6B6B;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            color: #1A1A1A;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .search-input::placeholder {
+            color: #9B9B9B;
+        }
+
+        /* Category Cards */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 16px 20px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .category-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 6px;
+        }
+
+        .category-subtitle {
+            font-size: 12px;
+            color: #6B6B6B;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .category-product-count {
+            font-size: 11px;
+            color: #9B9B9B;
+            margin-top: 8px;
+        }
+
+        .category-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .category-chevron {
+            color: #5A9B8E;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 390px;
+            width: 100%;
+            background: white;
+            border-top: 1px solid #F0F0EE;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-radius: 40px 40px 0 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #9B9B9B;
+        }
+
+        .nav-item.active {
+            color: #5A9B8E;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Creator Hub PDP */
+        .hub-header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #F0F0EE;
+        }
+
+        .hub-top {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .hub-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5A9B8E, #7AB5A8);
+        }
+
+        .hub-info {
+            flex: 1;
+        }
+
+        .hub-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .hub-role {
+            font-size: 13px;
+            color: #6B6B6B;
+            margin-bottom: 8px;
+        }
+
+        .hub-bio {
+            font-size: 14px;
+            color: #4A4A4A;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .hub-badges {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            background: #F0F8F6;
+            border-radius: 10px;
+            font-size: 11px;
+            color: #5A9B8E;
+            font-weight: 500;
+        }
+
+        .hub-tabs {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .tab {
+            padding: 10px 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #9B9B9B;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            color: #1A1A1A;
+            border-bottom-color: #5A9B8E;
+        }
+
+        /* Meal Cards in Hub */
+        .meal-card {
+            background: white;
+            margin: 12px 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .meal-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #E8F3F0, #D5E8E3);
+        }
+
+        .meal-content {
+            padding: 14px;
+        }
+
+        .meal-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .meal-desc {
+            font-size: 13px;
+            color: #6B6B6B;
+            margin-bottom: 10px;
+        }
+
+        .meal-macros {
+            font-size: 12px;
+            color: #4A4A4A;
+            margin-bottom: 10px;
+        }
+
+        .meal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flean-score {
+            font-size: 12px;
+            color: #5A9B8E;
+            font-weight: 600;
+        }
+
+        .add-button {
+            padding: 8px 20px;
+            background: #5A9B8E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 16px 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #F5F3F0, #E8E6E3);
+        }
+
+        .product-content {
+            padding: 12px;
+        }
+
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .product-brand {
+            font-size: 11px;
+            color: #9B9B9B;
+            margin-bottom: 8px;
+        }
+
+        .expert-signal {
+            font-size: 10px;
+            color: #5A9B8E;
+            margin-bottom: 10px;
+        }
+
+        /* Back Button */
+        .back-button {
+            padding: 16px 20px;
+            cursor: pointer;
+            font-size: 28px;
+            color: #1A1A1A;
+        }
+
+        /* Creators List */
+        .creators-list {
+            padding: 0 20px;
+        }
+
+        .creator-list-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            gap: 14px;
+            cursor: pointer;
+        }
+
+        .creator-list-card .avatar {
+            width: 60px;
+            height: 60px;
+        }
+
+        .creator-list-info {
+            flex: 1;
+        }
+
+        .creator-stats {
+            font-size: 12px;
+            color: #9B9B9B;
+            margin-top: 6px;
+        }
+
+        /* Detail Screen */
+        .detail-screen {
+            background: white;
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #E8F3F0, #D5E8E3);
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .detail-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: #9B9B9B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .macro-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .macro-item {
+            background: #F5F5F3;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .macro-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1A1A1A;
+        }
+
+        .macro-label {
+            font-size: 11px;
+            color: #6B6B6B;
+            margin-top: 4px;
+        }
+
+        .expert-avatars {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .expert-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7AB5A8, #5A9B8E);
+        }
+
+        /* Cart */
+        .cart-group {
+            background: white;
+            margin: 12px 20px;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .cart-group-header {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #F0F0EE;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .cart-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #E8F3F0, #D5E8E3);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-price {
+            font-size: 13px;
+            color: #6B6B6B;
+        }
+
+        .cart-total {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid #F0F0EE;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .total-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: #5A9B8E;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- HOME SCREEN -->
+        <div class="screen active" id="home">
+            <div class="header">
+                <div class="greeting">Hi, Priya</div>
+                <div class="location">📍 Delivering to: Prestige Lakeside, Whitefield</div>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div style="padding: 16px 20px;">
+                <div style="display: flex; gap: 8px; background: #F5F5F3; padding: 4px; border-radius: 12px;">
+                    <div class="mode-toggle" onclick="switchMode('stockUp')">
+                        <div style="font-size: 15px; font-weight: 600;">🧺 Stock Up</div>
+                        <div style="font-size: 11px; opacity: 0.8;">Pantry & products for the week</div>
+                    </div>
+                    <div class="mode-toggle active" onclick="switchMode('eatNow')">
+                        <div style="font-size: 15px; font-weight: 600;">🍽️ Eat Now</div>
+                        <div style="font-size: 11px; opacity: 0.8;">Healthy meals for today</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-bar-container">
+                <div class="search-bar" onclick="showSearchScreen()">
+                    <svg class="search-icon" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search meals, creators…">
+                </div>
+            </div>
+
+            <!-- Eat Now Mode Content -->
+            <div id="eatNowContent">
+                <div class="goal-chips">
+                    <div class="chip">Fat loss</div>
+                    <div class="chip">Muscle gain</div>
+                    <div class="chip">PCOS-friendly</div>
+                    <div class="chip">Light dinners</div>
+                    <div class="chip">High-protein</div>
+                </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Tonight's Drops</div>
+                </div>
+                <div class="meal-drop-card" onclick="showCreatorHub()">
+                    <div class="creator-info">
+                        <div class="avatar"></div>
+                        <div class="creator-name">Coach Arjun</div>
+                    </div>
+                    <div class="drop-title">Protein Dinner Drop</div>
+                    <div class="time-info">8:00–8:30 pm • Order by 6:30 pm</div>
+                    <div class="dish-preview">
+                        <div class="dish-thumb"></div>
+                        <div class="dish-thumb"></div>
+                        <div class="dish-thumb"></div>
+                    </div>
+                    <div class="health-strip">
+                        <div class="health-tag">High protein</div>
+                        <div class="health-tag">Better oils</div>
+                    </div>
+                    <button class="cta-button">View Menu</button>
+                </div>
+            </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">Creators for Meals</div>
+                    </div>
+                    <div class="creators-scroll">
+                        <div class="creator-card" onclick="showCreatorHub()">
+                            <div class="avatar"></div>
+                            <div class="creator-name">Coach Arjun</div>
+                            <div class="creator-role">Gym Trainer</div>
+                            <div class="creator-tags">
+                                <div class="creator-tag">Muscle gain</div>
+                                <div class="creator-tag">High-protein</div>
+                            </div>
+                        </div>
+                        <div class="creator-card">
+                            <div class="avatar"></div>
+                            <div class="creator-name">Dr. Meera</div>
+                            <div class="creator-role">Nutritionist</div>
+                            <div class="creator-tags">
+                                <div class="creator-tag">Fat loss</div>
+                                <div class="creator-tag">PCOS-friendly</div>
+                            </div>
+                        </div>
+                        <div class="creator-card">
+                            <div class="avatar"></div>
+                            <div class="creator-name">Yoga Priya</div>
+                            <div class="creator-role">Yoga Teacher</div>
+                            <div class="creator-tags">
+                                <div class="creator-tag">Light meals</div>
+                                <div class="creator-tag">Plant-based</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kit-card" style="background: #F0F8F6; border: 1px solid #D5E8E3; cursor: pointer;" onclick="switchMode('stockUp')">
+                    <div style="text-align: center;">
+                        <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">🧺 Plan Your Pantry</div>
+                        <div style="font-size: 13px; color: #6B6B6B;">Browse creator-curated kits & healthier products</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stock Up Mode Content -->
+            <div id="stockUpContent" style="display: none;">
+                <div class="goal-chips">
+                    <div class="chip">Breakfast upgrades</div>
+                    <div class="chip">Snack swaps</div>
+                    <div class="chip">Better oils</div>
+                    <div class="chip">High-protein</div>
+                    <div class="chip">Low sugar</div>
+                </div>
+
+                <!-- Search Results (Stock Up) -->
+                <div class="section" id="stockUpResultsSection" style="display: none;">
+                    <div class="section-header">
+                        <div class="section-title" id="stockUpResultsTitle">Search results</div>
+                    </div>
+                    <div class="product-grid" id="stockUpResultsGrid">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+
+                <!-- Default Stock Up Sections -->
+                <div id="stockUpDefaultSections">
+                <!-- Shop by Category Section - PRIMARY -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title">Shop by Category</div>
+                    </div>
+                    <div class="category-grid">
+                        <div class="category-card" onclick="showCategoryDetail('high-protein-breakfast')">
+                            <div class="category-name">High-Protein Breakfast</div>
+                            <div class="category-subtitle">Oats, muesli & cereal</div>
+                            <div class="health-strip">
+                                <div class="health-tag">High protein</div>
+                                <div class="health-tag">Whole grains</div>
+                            </div>
+                            <div class="category-footer">
+                                <div class="category-product-count">8 products</div>
+                                <div class="category-chevron">→</div>
+                            </div>
+                        </div>
+                        <div class="category-card" onclick="showCategoryDetail('nut-butters-spreads')">
+                            <div class="category-name">Nut Butters & Spreads</div>
+                            <div class="category-subtitle">Peanut, almond & seed butters</div>
+                            <div class="health-strip">
+                                <div class="health-tag">No palm oil</div>
+                                <div class="health-tag">Better oils</div>
+                            </div>
+                            <div class="category-footer">
+                                <div class="category-product-count">6 products</div>
+                                <div class="category-chevron">→</div>
+                            </div>
+                        </div>
+                        <div class="category-card" onclick="showCategoryDetail('snack-swaps')">
+                            <div class="category-name">Snack Swaps</div>
+                            <div class="category-subtitle">Healthier chips & namkeen</div>
+                            <div class="health-strip">
+                                <div class="health-tag">Baked / roasted</div>
+                                <div class="health-tag">High fiber</div>
+                            </div>
+                            <div class="category-footer">
+                                <div class="category-product-count">12 products</div>
+                                <div class="category-chevron">→</div>
+                            </div>
+                        </div>
+                        <div class="category-card" onclick="showCategoryDetail('oils-ghee')">
+                            <div class="category-name">Oils & Ghee</div>
+                            <div class="category-subtitle">Better cooking fats</div>
+                            <div class="health-strip">
+                                <div class="health-tag">Better oils</div>
+                                <div class="health-tag">Cold-pressed</div>
+                            </div>
+                            <div class="category-footer">
+                                <div class="category-product-count">10 products</div>
+                                <div class="category-chevron">→</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Creator Shops - Secondary Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title" style="font-size: 18px;">Creator Shops</div>
+                    </div>
+                    <div class="creators-scroll">
+                        <div class="creator-card" onclick="showCreatorHub('products')">
+                            <div class="avatar"></div>
+                            <div class="creator-name">Coach Arjun</div>
+                            <div class="creator-role">18 Products</div>
+                            <div class="creator-tags">
+                                <div class="creator-tag">High-protein</div>
+                                <div class="creator-tag">Better oils</div>
+                            </div>
+                        </div>
+                        <div class="creator-card">
+                            <div class="avatar"></div>
+                            <div class="creator-name">Dr. Meera</div>
+                            <div class="creator-role">24 Products</div>
+                            <div class="creator-tags">
+                                <div class="creator-tag">Gut health</div>
+                                <div class="creator-tag">Low sugar</div>
+                            </div>
+                        </div>
+                        <div class="creator-card">
+                            <div class="avatar"></div>
+                            <div class="creator-name">Yoga Priya</div>
+                            <div class="creator-role">15 Products</div>
+                            <div class="creator-tags">
+                                <div class="creator-tag">Organic</div>
+                                <div class="creator-tag">Plant-based</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Kits (optional) - Tertiary Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title" style="font-size: 16px; opacity: 0.75;">Quick Kits (optional)</div>
+                    </div>
+                    <div class="kits-horizontal-rail">
+                        <div class="quick-kit-card" onclick="showKitDetail()">
+                            <div class="kit-badge">KIT • 5 items</div>
+                            <div class="quick-kit-title">Breakfast Starter Kit</div>
+                            <div class="quick-kit-desc">High-protein mornings</div>
+                            <div class="quick-kit-price">₹850–1,200</div>
+                            <button class="add-button" style="width: 100%; margin-top: 8px; padding: 6px; font-size: 12px; background: #5A9B8E;">View kit</button>
+                        </div>
+                        <div class="quick-kit-card" onclick="showKitDetail()">
+                            <div class="kit-badge">KIT • 6 items</div>
+                            <div class="quick-kit-title">Snack Swap Box</div>
+                            <div class="quick-kit-desc">Replace chips & biscuits</div>
+                            <div class="quick-kit-price">₹600–900</div>
+                            <button class="add-button" style="width: 100%; margin-top: 8px; padding: 6px; font-size: 12px; background: #5A9B8E;">View kit</button>
+                        </div>
+                        <div class="quick-kit-card" onclick="showKitDetail()">
+                            <div class="kit-badge">KIT • 4 items</div>
+                            <div class="quick-kit-title">Better Oils Bundle</div>
+                            <div class="quick-kit-desc">Cold-pressed essentials</div>
+                            <div class="quick-kit-price">₹1,200–1,500</div>
+                            <button class="add-button" style="width: 100%; margin-top: 8px; padding: 6px; font-size: 12px; background: #5A9B8E;">View kit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subtle Cross-Mode Banner -->
+                <div style="padding: 12px 20px 24px; text-align: center;">
+                    <div style="font-size: 12px; color: #9B9B9B; cursor: pointer;" onclick="switchMode('eatNow')">
+                        Hungry now? Switch to Eat Now →
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATORS LIST SCREEN -->
+        <div class="screen" id="creators">
+            <div class="header">
+                <div class="greeting">Creators</div>
+            </div>
+
+            <div class="goal-chips">
+                <div class="chip">All</div>
+                <div class="chip">Trainers</div>
+                <div class="chip">Nutritionists</div>
+                <div class="chip">Yoga</div>
+                <div class="chip">Doctors</div>
+            </div>
+
+            <div class="creators-list">
+                <div class="creator-list-card" onclick="showCreatorHub()">
+                    <div class="avatar"></div>
+                    <div class="creator-list-info">
+                        <div class="creator-name" style="font-size: 16px; font-weight: 600;">Coach Arjun</div>
+                        <div class="creator-role">Gym Trainer</div>
+                        <div class="health-strip" style="margin-top: 8px;">
+                            <div class="health-tag">Fat loss</div>
+                            <div class="health-tag">Muscle gain</div>
+                        </div>
+                        <div class="creator-stats">12 Meals · 18 Products</div>
+                    </div>
+                    <div class="badge" style="height: fit-content;">✓ Verified</div>
+                </div>
+
+                <div class="creator-list-card">
+                    <div class="avatar"></div>
+                    <div class="creator-list-info">
+                        <div class="creator-name" style="font-size: 16px; font-weight: 600;">Dr. Meera Sharma</div>
+                        <div class="creator-role">Nutritionist</div>
+                        <div class="health-strip" style="margin-top: 8px;">
+                            <div class="health-tag">PCOS-friendly</div>
+                            <div class="health-tag">Gut health</div>
+                        </div>
+                        <div class="creator-stats">8 Meals · 24 Products</div>
+                    </div>
+                    <div class="badge" style="height: fit-content;">✓ Verified</div>
+                </div>
+
+                <div class="creator-list-card">
+                    <div class="avatar"></div>
+                    <div class="creator-list-info">
+                        <div class="creator-name" style="font-size: 16px; font-weight: 600;">Yoga Priya</div>
+                        <div class="creator-role">Yoga Teacher</div>
+                        <div class="health-strip" style="margin-top: 8px;">
+                            <div class="health-tag">Light meals</div>
+                            <div class="health-tag">Plant-based</div>
+                        </div>
+                        <div class="creator-stats">10 Meals · 15 Products</div>
+                    </div>
+                    <div class="badge" style="height: fit-content;">✓ Verified</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATOR HUB PDP -->
+        <div class="screen" id="creatorHub">
+            <div class="back-button" onclick="goBack()">←</div>
+            <div class="hub-header">
+                <div class="hub-top">
+                    <div class="hub-avatar"></div>
+                    <div class="hub-info">
+                        <div class="hub-name">Coach Arjun</div>
+                        <div class="hub-role">Gym Trainer · Prestige Lakeside</div>
+                    </div>
+                </div>
+                <div class="hub-bio">Helps busy professionals build lean muscle with high-protein Indian meals.</div>
+                <div class="hub-badges">
+                    <div class="badge">✓ Flean-Verified</div>
+                    <div class="badge">1.2k Followers</div>
+                </div>
+                <div class="health-strip" style="margin-top: 12px;">
+                    <div class="health-tag">Fat loss</div>
+                    <div class="health-tag">Muscle gain</div>
+                    <div class="health-tag">Beginner-friendly</div>
+                </div>
+                <div class="hub-tabs">
+                    <div class="tab active" onclick="switchTab('meals')">Meals</div>
+                    <div class="tab" onclick="switchTab('products')">Products</div>
+                </div>
+            </div>
+
+            <div id="mealsTab">
+                <div class="section-header" style="margin-top: 16px;">
+                    <div class="section-title">Tonight's Drop</div>
+                </div>
+                <div class="meal-drop-card">
+                    <div class="drop-title">Protein Dinner Drop</div>
+                    <div class="time-info">Delivery 8:00–8:30 pm • Order by 6:30 pm</div>
+                    <div style="font-size: 12px; color: #5A9B8E; margin-top: 8px;">12 of 25 bowls booked</div>
+                </div>
+
+                <div class="meal-card" onclick="showMealDetail()">
+                    <div class="meal-image"></div>
+                    <div class="meal-content">
+                        <div class="meal-name">Paneer Tikka Quinoa Bowl</div>
+                        <div class="meal-desc">Paneer + quinoa bowl with roasted veggies</div>
+                        <div class="meal-macros">Protein 30g · Approx 500 kcal</div>
+                        <div class="health-strip">
+                            <div class="health-tag">High protein</div>
+                            <div class="health-tag">Better oils</div>
+                            <div class="health-tag">Whole grains</div>
+                        </div>
+                        <div class="meal-footer">
+                            <div class="flean-score">Flean Score: 8.5/10</div>
+                            <button class="add-button">Add for tonight</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-image"></div>
+                    <div class="meal-content">
+                        <div class="meal-name">Grilled Chicken & Brown Rice</div>
+                        <div class="meal-desc">Tender chicken with masala brown rice & salad</div>
+                        <div class="meal-macros">Protein 35g · Approx 520 kcal</div>
+                        <div class="health-strip">
+                            <div class="health-tag">High protein</div>
+                            <div class="health-tag">Low sugar</div>
+                        </div>
+                        <div class="meal-footer">
+                            <div class="flean-score">Flean Score: 8.8/10</div>
+                            <button class="add-button">Add for tonight</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="productsTab" style="display: none;">
+                <!-- Curated Kits Only -->
+                <div class="section-header" style="padding: 0 20px; margin-top: 16px;">
+                    <div class="section-title">Curated Kits</div>
+                </div>
+                <div class="kit-card" onclick="showKitDetail()">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <div class="kit-badge">KIT • 5 items</div>
+                    </div>
+                    <div class="kit-title">Breakfast Starter Kit</div>
+                    <div class="kit-info" style="font-size: 13px; color: #4A4A4A; margin-bottom: 8px;">High-protein mornings</div>
+                    <div class="kit-info">₹850–1,200</div>
+                    <div class="health-strip" style="margin-top: 10px;">
+                        <div class="health-tag">High-protein</div>
+                        <div class="health-tag">Whole grains</div>
+                    </div>
+                    <button class="add-button" style="width: 100%; margin-top: 12px; background: #5A9B8E;">View kit</button>
+                </div>
+                <div class="kit-card" onclick="showKitDetail()">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <div class="kit-badge">KIT • 6 items</div>
+                    </div>
+                    <div class="kit-title">Snack Swap Box</div>
+                    <div class="kit-info" style="font-size: 13px; color: #4A4A4A; margin-bottom: 8px;">Replace chips & biscuits</div>
+                    <div class="kit-info">₹600–900</div>
+                    <div class="health-strip" style="margin-top: 10px;">
+                        <div class="health-tag">Low sugar</div>
+                        <div class="health-tag">High fiber</div>
+                    </div>
+                    <button class="add-button" style="width: 100%; margin-top: 12px; background: #5A9B8E;">View kit</button>
+                </div>
+                <div class="kit-card" onclick="showKitDetail()">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <div class="kit-badge">KIT • 4 items</div>
+                    </div>
+                    <div class="kit-title">Better Oils Bundle</div>
+                    <div class="kit-info" style="font-size: 13px; color: #4A4A4A; margin-bottom: 8px;">Cold-pressed essentials</div>
+                    <div class="kit-info">₹1,200–1,500</div>
+                    <div class="health-strip" style="margin-top: 10px;">
+                        <div class="health-tag">Better oils</div>
+                        <div class="health-tag">No additives</div>
+                    </div>
+                    <button class="add-button" style="width: 100%; margin-top: 12px; background: #5A9B8E;">View kit</button>
+                </div>
+
+                <!-- Optional link to browse all products -->
+                <div style="padding: 16px 20px 24px; text-align: center;">
+                    <a class="products-link" onclick="goToAllProducts()" style="font-size: 12px; color: #9B9B9B;">Browse all products in Flean →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- MEAL DETAIL SCREEN -->
+        <div class="screen detail-screen" id="mealDetail">
+            <div class="back-button" onclick="goBack()">←</div>
+            <div class="detail-image"></div>
+            <div class="detail-content">
+                <div class="creator-info" style="margin-bottom: 12px;">
+                    <div class="avatar"></div>
+                    <div class="creator-name">Coach Arjun</div>
+                </div>
+                <div class="detail-title">Paneer Tikka Quinoa Bowl</div>
+                <div class="meal-desc">Paneer + quinoa bowl with roasted veggies</div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Macros & Nutrition</div>
+                    <div class="macro-grid">
+                        <div class="macro-item">
+                            <div class="macro-value">30g</div>
+                            <div class="macro-label">Protein</div>
+                        </div>
+                        <div class="macro-item">
+                            <div class="macro-value">45g</div>
+                            <div class="macro-label">Carbs</div>
+                        </div>
+                        <div class="macro-item">
+                            <div class="macro-value">18g</div>
+                            <div class="macro-label">Fats</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 14px; color: #4A4A4A;">
+                        Approx 500 calories
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Health Tags</div>
+                    <div class="health-strip">
+                        <div class="health-tag">High protein</div>
+                        <div class="health-tag">Better oils</div>
+                        <div class="health-tag">Whole grains</div>
+                        <div class="health-tag">No refined sugar</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Ingredients</div>
+                    <div style="font-size: 14px; color: #4A4A4A; line-height: 1.6;">
+                        Paneer (cottage cheese), quinoa, roasted vegetables (bell peppers, zucchini, carrots), tikka marinade (yogurt, spices), cold-pressed oil
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Also Backed By</div>
+                    <div class="expert-avatars">
+                        <div class="expert-avatar"></div>
+                        <div class="expert-avatar"></div>
+                        <div class="expert-avatar"></div>
+                    </div>
+                    <div style="font-size: 12px; color: #6B6B6B; margin-top: 8px;">
+                        2 nutritionists, 1 yoga teacher
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Available For</div>
+                    <div style="font-size: 14px; color: #4A4A4A; margin-bottom: 6px;">
+                        Tonight's Dinner Drop
+                    </div>
+                    <div class="time-info">Delivery 8:00–8:30 pm • Order cut-off 6:30 pm</div>
+                </div>
+
+                <button class="cta-button">Add to tonight's order</button>
+            </div>
+        </div>
+
+        <!-- CATEGORY DETAIL SCREEN -->
+        <div class="screen" id="categoryDetail">
+            <div class="back-button" onclick="goBack()">←</div>
+            <div class="hub-header" style="border-bottom: none; padding-bottom: 0;">
+                <div class="section-header" style="padding: 20px 20px 16px;">
+                    <div class="section-title" id="categoryDetailTitle">High-Protein Breakfast</div>
+                    <div class="health-strip" id="categoryDetailTags" style="margin-top: 12px;">
+                        <div class="health-tag">High protein</div>
+                        <div class="health-tag">Whole grains</div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-grid" id="categoryProductsGrid">
+                <!-- Products will be dynamically loaded based on category -->
+            </div>
+        </div>
+
+        <!-- PRODUCT DETAIL SCREEN -->
+        <div class="screen detail-screen" id="productDetail">
+            <div class="back-button" onclick="goBack()">←</div>
+            <div class="detail-image"></div>
+            <div class="detail-content">
+                <div class="product-brand" style="font-size: 13px; color: #6B6B6B;">True Elements</div>
+                <div class="detail-title">High-Protein Oats Mix</div>
+                <div style="font-size: 14px; color: #6B6B6B; margin-bottom: 20px;">500g</div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Flean Health Score</div>
+                    <div style="font-size: 28px; font-weight: 600; color: #5A9B8E; margin-bottom: 12px;">8.2/10</div>
+                    <div class="health-strip">
+                        <div class="health-tag">Low sugar</div>
+                        <div class="health-tag">Better oils</div>
+                        <div class="health-tag">High protein</div>
+                    </div>
+                    <div style="font-size: 14px; color: #4A4A4A; margin-top: 12px; line-height: 1.5;">
+                        • Contains whole oats with no added refined sugar<br>
+                        • Enhanced with plant-based protein blend<br>
+                        • No artificial preservatives or flavors
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Why Coach Arjun Recommends This</div>
+                    <div style="font-size: 14px; color: #4A4A4A; font-style: italic; line-height: 1.5;">
+                        "Perfect for busy mornings. My clients love this because it's convenient without compromising on protein or ingredients. Mix with milk and you're good to go."
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-label">Also Recommended By</div>
+                    <div class="expert-avatars">
+                        <div class="expert-avatar"></div>
+                        <div class="expert-avatar"></div>
+                        <div class="expert-avatar"></div>
+                    </div>
+                    <div style="font-size: 12px; color: #6B6B6B; margin-top: 8px;">
+                        3 gym trainers, 2 nutritionists
+                    </div>
+                </div>
+
+                <button class="cta-button">Add to Pantry Drop</button>
+            </div>
+        </div>
+
+        <!-- ORDERS SCREEN -->
+        <div class="screen" id="orders">
+            <div class="header">
+                <div class="greeting">Orders</div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Upcoming</div>
+                </div>
+                <div class="kit-card">
+                    <div class="badge" style="display: inline-block; margin-bottom: 8px;">Scheduled</div>
+                    <div class="kit-title">Tonight's Dinner Drop</div>
+                    <div class="creator-info" style="margin-top: 8px;">
+                        <div class="avatar"></div>
+                        <div class="creator-name">Coach Arjun</div>
+                    </div>
+                    <div class="time-info" style="margin-top: 10px;">Delivering: 8:00–8:30 pm today</div>
+                    <div style="font-size: 14px; color: #4A4A4A; margin-top: 8px;">3 items • ₹900</div>
+                </div>
+
+                <div class="kit-card">
+                    <div class="badge" style="display: inline-block; margin-bottom: 8px; background: #FFF4E6; color: #D97706;">Scheduled</div>
+                    <div class="kit-title">Sunday Pantry Drop</div>
+                    <div class="creator-info" style="margin-top: 8px;">
+                        <div class="avatar"></div>
+                        <div class="creator-name">Coach Arjun's Breakfast Kit</div>
+                    </div>
+                    <div class="time-info" style="margin-top: 10px;">Delivering: Sunday 6:00–8:00 pm</div>
+                    <div style="font-size: 14px; color: #4A4A4A; margin-top: 8px;">5 items • ₹1,150</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">Past Orders</div>
+                </div>
+                <div class="kit-card">
+                    <div class="kit-title">Protein Dinner Drop</div>
+                    <div class="creator-info" style="margin-top: 8px;">
+                        <div class="avatar"></div>
+                        <div class="creator-name">Coach Arjun</div>
+                    </div>
+                    <div style="font-size: 13px; color: #6B6B6B; margin-top: 8px;">
+                        Delivered Nov 15 • 3 items • ₹850
+                    </div>
+                    <button class="add-button" style="width: fit-content; margin-top: 12px;">Reorder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchScreen('home')">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1c.55 0 .85-.66.5-1.08l-9-9c-.28-.28-.72-.28-1 0l-9 9c-.35.42-.05 1.08.5 1.08z"/>
+                </svg>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="switchScreen('creators')">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                </svg>
+                <div class="nav-label">Creators</div>
+            </div>
+            <div class="nav-item" onclick="switchScreen('orders')">
+                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                </svg>
+                <div class="nav-label">Profile</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 'home';
+        let previousScreen = 'home';
+        let currentMode = 'eatNow';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            // Submit search on Enter
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            // If user clears the search text in Stock Up mode, restore default sections
+            searchInput.addEventListener('input', () => {
+                if (!searchInput.value.trim() && currentMode === 'stockUp') {
+                    clearStockUpSearch();
+                }
+            });
+        });
+
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Update toggle buttons
+            document.querySelectorAll('.mode-toggle').forEach((toggle, index) => {
+                toggle.classList.remove('active');
+                if ((mode === 'stockUp' && index === 0) || (mode === 'eatNow' && index === 1)) {
+                    toggle.classList.add('active');
+                }
+            });
+            
+            // Update search placeholder text
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                if (mode === 'eatNow') {
+                    searchInput.placeholder = 'Search meals, creators…';
+                    clearStockUpSearch();
+                } else {
+                    searchInput.placeholder = 'Search products, creators…';
+                }
+            }
+            
+            // Show/hide content
+            if (mode === 'eatNow') {
+                document.getElementById('eatNowContent').style.display = 'block';
+                document.getElementById('stockUpContent').style.display = 'none';
+            } else {
+                document.getElementById('eatNowContent').style.display = 'none';
+                document.getElementById('stockUpContent').style.display = 'block';
+            }
+        }
+
+        function showSearchScreen() {
+            // No separate search screen; inline search handled by handleSearch()
+        }
+
+        function handleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            const query = searchInput.value.trim();
+
+            if (!query) {
+                if (currentMode === 'stockUp') {
+                    clearStockUpSearch();
+                }
+                return;
+            }
+
+            if (currentMode === 'stockUp') {
+                searchStockUpProducts(query);
+            } else {
+                // Meal search not implemented yet
+                alert('Meal search is coming soon. Switch to Stock Up to search products.');
+            }
+        }
+
+        async function searchStockUpProducts(query) {
+            const resultsSection = document.getElementById('stockUpResultsSection');
+            const resultsTitle = document.getElementById('stockUpResultsTitle');
+            const resultsGrid = document.getElementById('stockUpResultsGrid');
+            const defaultSections = document.getElementById('stockUpDefaultSections');
+            if (!resultsSection || !resultsTitle || !resultsGrid || !defaultSections) return;
+
+            // Show "searching" state
+            resultsTitle.textContent = `Results for "${query}"`;
+            resultsGrid.innerHTML = '<div style="grid-column: 1 / -1; padding: 20px; text-align: center; font-size: 13px; color: #9B9B9B;">Searching…</div>';
+
+            // Show results, hide default content
+            resultsSection.style.display = 'block';
+            defaultSections.style.display = 'none';
+
+            try {
+                const res = await fetch('http://127.0.0.1:8080/rs/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+
+                if (!res.ok) throw new Error('Network error');
+
+                const data = await res.json();
+                const products = Array.isArray(data.products) ? data.products : [];
+                renderStockUpProducts(products);
+            } catch (err) {
+                console.error(err);
+                resultsGrid.innerHTML = '<div style="grid-column: 1 / -1; padding: 20px; text-align: center; font-size: 13px; color: #D14343;">Something went wrong. Please try again.</div>';
+            }
+        }
+
+        function renderStockUpProducts(products) {
+            const grid = document.getElementById('stockUpResultsGrid');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+
+            if (!products.length) {
+                grid.innerHTML = '<div style="grid-column: 1 / -1; padding: 20px; text-align: center; font-size: 13px; color: #9B9B9B;">No products found. Try another keyword.</div>';
+                return;
+            }
+
+            products.forEach(p => {
+                const expertCounts = p.expert_counts || {};
+                const totalExperts =
+                    (expertCounts.trainers || 0) +
+                    (expertCounts.nutritionists || 0) +
+                    (expertCounts.doctors || 0);
+
+                const expertText = totalExperts > 0
+                    ? `Picked by ${totalExperts} experts`
+                    : '';
+
+                const priceText = p.currency === 'INR'
+                    ? `₹${p.price}`
+                    : `${p.price} ${p.currency || ''}`;
+
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.onclick = () => showProductDetail(); // can be improved later to pass product data
+
+                const bgStyle = p.image_url
+                    ? `background-image: url('${p.image_url}'); background-size: cover; background-position: center;`
+                    : '';
+
+                productCard.innerHTML = `
+                    <div class="product-image" style="${bgStyle}"></div>
+                    <div class="product-content">
+                        <div class="product-brand">${p.brand || ''}</div>
+                        <div class="product-name">${p.name || ''}</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #1A1A1A; margin: 6px 0;">
+                            ${priceText}
+                        </div>
+                        <div class="health-strip">
+                            ${(p.health_tags || []).map(tag => `
+                                <div class="health-tag">${tag}</div>
+                            `).join('')}
+                        </div>
+                        <div class="expert-signal">${expertText}</div>
+                        <button class="add-button" style="width: 100%;">Add</button>
+                    </div>
+                `;
+
+                grid.appendChild(productCard);
+            });
+        }
+
+        function clearStockUpSearch() {
+            const resultsSection = document.getElementById('stockUpResultsSection');
+            const resultsGrid = document.getElementById('stockUpResultsGrid');
+            const defaultSections = document.getElementById('stockUpDefaultSections');
+            if (resultsGrid) resultsGrid.innerHTML = '';
+            if (resultsSection) resultsSection.style.display = 'none';
+            if (defaultSections) defaultSections.style.display = 'block';
+        }
+
+        function switchScreen(screenId) {
+            // Store previous screen
+            previousScreen = currentScreen;
+            
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            currentScreen = screenId;
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function showCreatorHub(tab = 'meals') {
+            previousScreen = currentScreen;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('creatorHub').classList.add('active');
+            currentScreen = 'creatorHub';
+            
+            // Switch to appropriate tab if specified
+            switchTab(tab);
+        }
+
+        function showMealDetail() {
+            previousScreen = currentScreen;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('mealDetail').classList.add('active');
+            currentScreen = 'mealDetail';
+        }
+
+        function showProductDetail() {
+            previousScreen = currentScreen;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('productDetail').classList.add('active');
+            currentScreen = 'productDetail';
+        }
+
+        function showCategoryDetail(categoryId) {
+            previousScreen = currentScreen;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('categoryDetail').classList.add('active');
+            currentScreen = 'categoryDetail';
+
+            // Category data mapping
+            const categoryData = {
+                'high-protein-breakfast': {
+                    title: 'High-Protein Breakfast',
+                    tags: ['High protein', 'Whole grains'],
+                    products: [
+                        { brand: 'True Elements', name: 'High-Protein Oats', price: '₹299', tags: ['Low sugar', 'Better oils'], expert: 'Picked by 3 experts' },
+                        { brand: 'Yogabar', name: 'Protein Muesli', price: '₹350', tags: ['High protein', 'Whole grains'], expert: 'Used by 2 trainers' },
+                        { brand: 'Organic India', name: 'Millet Oats Breakfast Mix', price: '₹320', tags: ['Whole grains', 'High protein'], expert: 'Picked by 2 experts' }
+                    ]
+                },
+                'nut-butters-spreads': {
+                    title: 'Nut Butters & Spreads',
+                    tags: ['No palm oil', 'Better oils'],
+                    products: [
+                        { brand: 'Nourish', name: 'Almond Butter', price: '₹450', tags: ['No additives'], expert: 'Used by 2 trainers' },
+                        { brand: 'Pintola', name: 'Peanut Butter (No Added Sugar)', price: '₹380', tags: ['No palm oil', 'No additives'], expert: 'Picked by 3 experts' },
+                        { brand: 'Organic India', name: 'Mixed Seed Butter', price: '₹420', tags: ['Better oils', 'No additives'], expert: 'Backed by 4 experts' }
+                    ]
+                },
+                'snack-swaps': {
+                    title: 'Snack Swaps',
+                    tags: ['Baked / roasted', 'High fiber'],
+                    products: [
+                        { brand: 'True Elements', name: 'Roasted Chana Mix', price: '₹150', tags: ['High fiber', 'High protein'], expert: 'Picked by 2 experts' },
+                        { brand: 'Yogabar', name: 'Baked Multigrain Chips', price: '₹120', tags: ['Baked / roasted', 'High fiber'], expert: 'Used by 3 trainers' },
+                        { brand: 'Organic India', name: 'Masala Fox Nuts (Makhana)', price: '₹180', tags: ['High fiber', 'Low sugar'], expert: 'Picked by 4 experts' }
+                    ]
+                },
+                'oils-ghee': {
+                    title: 'Oils & Ghee',
+                    tags: ['Better oils', 'Cold-pressed'],
+                    products: [
+                        { brand: 'Sattvic', name: 'Cold-Pressed Groundnut Oil', price: '₹380', tags: ['Better oils', 'Cold-pressed'], expert: 'Backed by 4 experts' },
+                        { brand: 'Saffola', name: 'Rice Bran Oil', price: '₹350', tags: ['Better oils'], expert: 'Backed by 3 experts' },
+                        { brand: 'Organic India', name: 'A2 Cow Ghee', price: '₹550', tags: ['Better oils', 'No additives'], expert: 'Picked by 2 experts' }
+                    ]
+                }
+            };
+
+            const category = categoryData[categoryId];
+            if (!category) return;
+
+            // Update title and tags
+            document.getElementById('categoryDetailTitle').textContent = category.title;
+            const tagsContainer = document.getElementById('categoryDetailTags');
+            tagsContainer.innerHTML = '';
+            category.tags.forEach(tag => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'health-tag';
+                tagEl.textContent = tag;
+                tagsContainer.appendChild(tagEl);
+            });
+
+            // Populate products
+            const productsGrid = document.getElementById('categoryProductsGrid');
+            productsGrid.innerHTML = '';
+            category.products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.onclick = () => showProductDetail();
+                productCard.innerHTML = `
+                    <div class="product-image"></div>
+                    <div class="product-content">
+                        <div class="product-brand">${product.brand}</div>
+                        <div class="product-name">${product.name}</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #1A1A1A; margin: 6px 0;">${product.price}</div>
+                        <div class="health-strip">
+                            ${product.tags.map(tag => `<div class="health-tag">${tag}</div>`).join('')}
+                        </div>
+                        <div class="expert-signal">${product.expert}</div>
+                        <button class="add-button" style="width: 100%;">Add</button>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        function goBack() {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(previousScreen).classList.add('active');
+            currentScreen = previousScreen;
+        }
+
+        function switchTab(tabName) {
+            // Update tab styling
+            document.querySelectorAll('.tab').forEach(t => {
+                t.classList.remove('active');
+                if ((tabName === 'meals' && t.textContent.trim() === 'Meals') ||
+                    (tabName === 'products' && t.textContent.trim() === 'Products')) {
+                    t.classList.add('active');
+                }
+            });
+            
+            // Show/hide content
+            if (tabName === 'meals') {
+                document.getElementById('mealsTab').style.display = 'block';
+                document.getElementById('productsTab').style.display = 'none';
+            } else {
+                document.getElementById('mealsTab').style.display = 'none';
+                document.getElementById('productsTab').style.display = 'block';
+            }
+        }
+
+        function showKitDetail() {
+            // Placeholder for kit detail view
+            alert('Kit detail view - coming soon!');
+        }
+
+        function goToAllProducts() {
+            // Navigate to home screen and switch to Stock Up mode
+            previousScreen = currentScreen;
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('home').classList.add('active');
+            currentScreen = 'home';
+            switchMode('stockUp');
+        }
+    </script>
+</body>
+</html>
